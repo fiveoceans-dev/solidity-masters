@@ -1,0 +1,31 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Problem {
+  id               Int      @id @default(autoincrement())
+  title            String   @unique
+  status           String?  @default("Unsolved")
+  topics           Json
+  companies        Json
+  description      String
+  examples         Json
+  constraints      Json
+  follow_up        String?
+  interview_data   Json?
+  hints            Json?
+  solidity_template Json?
+  testcases        Json?
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+}
+
+model Leaderboard {
+  wallet_address  String @id
+  problems_solved Int    @default(0)
+}
