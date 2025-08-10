@@ -2,8 +2,16 @@ const fs = require('fs');
 const path = require('path');
 const { Client } = require('pg'); // PostgreSQL client
 
+// Use Supabase connection string when available so the problem loader works in
+// Supabase-hosted environments. Falls back to DATABASE_URL for compatibility
+// with local setups.
+const connectionString = process.env.SUPABASE_DB_URL || process.env.DATABASE_URL;
+
 const dbClient = new Client({
-  connectionString: process.env.DATABASE_URL,
+  connectionString,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 dbClient.connect();
 
